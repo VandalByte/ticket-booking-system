@@ -19,3 +19,9 @@ class EventRepository:
 
     async def get_all_events(self):
         return await self.collection.find().to_list(length=100)
+
+    async def get_event_by_id(self, event_id: str):
+        """
+        Finds a single event by its unique ID.
+        """
+        return await self.collection.find_one({"_id": event_id})
