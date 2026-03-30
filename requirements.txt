@@ -1,0 +1,17 @@
+fastapi[standard]
+pydantic-settings
+
+# security
+argon2-cffi
+python-jose[cryptography] # for JWT handling
+
+# Testing
+pytest
+httpx
+
+# MongoDB (async driver)
+motor
+pymongo
+
+# Redis (async client)
+redis
