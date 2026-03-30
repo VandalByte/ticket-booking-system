@@ -8,6 +8,15 @@ class SeatService:
         self.seat_repo = seat_repo
         self.redis = redis_client
 
+    async def get_seats_by_event(self, event_id: str):
+        """
+        Fetches all seats for an event and returns them.
+        """
+        seats = await self.seat_repo.get_seats_by_event(event_id)
+        # Optional: You can add logic here to check Redis and mark seats
+        # as 'held' in the frontend if someone else has a lock.
+        return seats
+
     async def lock_seats(self, event_id: str, seat_numbers: list[str], user_id: str):
         for seat in seat_numbers:
             lock_key = f"lock:{event_id}:{seat}"

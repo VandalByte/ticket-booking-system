@@ -22,3 +22,8 @@ async def lock_seats(
     return await service.lock_seats(
         payload.event_id, payload.seat_numbers, current_user.user_id
     )
+
+
+@router.get("/{event_id}", response_model=list[SeatResponse])
+async def get_seats(event_id: str, service: SeatService = Depends(get_seat_service)):
+    return await service.get_seats_by_event(event_id)

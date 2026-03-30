@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from app.core.database import connect_to_mongo, close_mongo_connection
 from app.api.routes.auth import router as auth_router
@@ -10,6 +11,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await connect_to_mongo()
@@ -19,12 +21,21 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Ticket Booking API", lifespan=lifespan)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Include API routers
 app.include_router(auth_router)
 app.include_router(event_router)
 app.include_router(seat_router)
 app.include_router(booking_router)
 app.include_router(payment_router)
+
 
 @app.get("/")
 async def root():
