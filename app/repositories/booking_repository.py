@@ -26,6 +26,8 @@ class BookingRepository:
         return await self.collection.find_one({"_id": booking_id})
 
     async def update_status(self, booking_id: str, status: str):
-        return await self.collection.update_one(
+        result = await self.collection.update_one(
             {"_id": booking_id}, {"$set": {"status": status}}
         )
+        # print(f"Updated {result.modified_count} booking")  # debugging statement
+        return result

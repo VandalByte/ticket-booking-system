@@ -19,3 +19,14 @@ class SeatRepository:
         return await self.collection.find_one(
             {"event_id": event_id, "seat_number": seat_number}
         )
+
+    async def mark_seats_booked(self, event_id: str, seat_numbers: list[str]):
+        result = await self.collection.update_many(
+            {
+                "event_id": event_id,  # Must match exactly
+                "seat_number": {"$in": seat_numbers},
+            },
+            {"$set": {"status": "booked"}},
+        )
+        # print(f"Updated {result.modified_count} seats")  # Debugging statement
+        return result
